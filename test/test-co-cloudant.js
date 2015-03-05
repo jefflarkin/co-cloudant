@@ -25,7 +25,8 @@ describe('Wrapped Cloudant Connection', function(){
                  key:process.env.CLOUDANT_KEY,
                  password:process.env.CLOUDANT_PASSWORD}
   var Cloudant, _cloudant, _db;
-  var wrap = require('../lib/co-cloudant');
+  var wrap = require('../index');
+  //FIXME: Should create a temporary database for the test
   before(function(done)
   {
     Cloudant = require('cloudant')({account: process.env.CLOUDANT_USER,
@@ -37,6 +38,11 @@ describe('Wrapped Cloudant Connection', function(){
                                           done();
                                         });
   });
+  //FIXME: Should clean up temporary database
+  after(function(done)
+  {
+    done();
+  })
   var inserted_id0, inserted_id1;
   it('should connect', function()
   {
@@ -49,7 +55,6 @@ describe('Wrapped Cloudant Connection', function(){
       assert(response.couchdb);
     });
   });
-  it('should create a database');
   it('should wrap a database', function()
   {
     _db = wrap(_cloudant.use(process.env.CLOUDANT_DATABASE));
@@ -76,6 +81,24 @@ describe('Wrapped Cloudant Connection', function(){
     assert(body[0]._id === inserted_id0.id);
     assert(body[0].name === "test");
   });
+  it('should list records', function *()
+  {
+    var body = yield _db.list();
+    assert(body[0].total_rows === body[0].rows.length);
+  });
+  it('should get a document head');
+  it('should copy a document');
+  it('should fetch multiple documents');
+  it('should fetch revisions');
+  it('should create a view');
+  it('should fetch views', function *()
+  {
+    var pages = yield _db.view('posts','pages',{});
+    assert(pages[0].total_rows === pages[0].rows.length);
+  });
+  it('should call a show function');
+  it('should respond to atomic update');
+  it('should search');
   it('should delete a record', function *()
   {
     var resp = yield _db.destroy(inserted_id0.id, inserted_id0.rev);
@@ -83,16 +106,4 @@ describe('Wrapped Cloudant Connection', function(){
     resp = yield _db.destroy(inserted_id1.id, inserted_id1.rev);
     assert(resp[0].ok === true);
   });
-  it('should list records', function *()
-  {
-    var body = yield _db.list();
-    assert(body[0].total_rows === body[0].rows.length);
-  });
-  it('should create a view');
-  it('should fetch views', function *()
-  {
-    var pages = yield _db.view('posts','pages',{});
-    assert(pages[0].total_rows === pages[0].rows.length);
-  });
-  it('should delete a database');
 });

@@ -5,7 +5,15 @@ var methods = [
   "destroy",
   "get",
   "view",
-  "list"
+  "list",
+  "head",
+  "copy",
+  "bulk",
+  "fetch",
+  "fetch_revs",
+  "show",
+  "atomic",
+  "search"
 ];
 
 module.exports = function(db)
