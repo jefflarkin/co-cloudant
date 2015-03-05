@@ -26,5 +26,12 @@
   "bugs": {
     "url": "https://github.com/jefflarkin/co-cloudant/issues"
   },
-  "homepage": "https://github.com/jefflarkin/co-cloudant"
+  "homepage": "https://github.com/jefflarkin/co-cloudant",
+  "dependencies": {
+    "cloudant": "^1.0.0-beta3",
+    "thunkify": "^2.1.2"
+  },
+  "devDependencies": {
+    "co-mocha": "^1.1.0"
+  }
 }
